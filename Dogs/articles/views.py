@@ -5,6 +5,12 @@ from django.urls import reverse
 
 from django.http import HttpResponseRedirect, Http404
 
+def index(request):
+    return render(request, 'articles/index.html')
+
+def about(request):
+    return render(request, 'articles/about.html')
+
 def articles(request):
     latest_articles_list = Article.objects.order_by('-pub_date')[:5]
     return render(request, 'articles/list.html', {'latest_articles_list':latest_articles_list})

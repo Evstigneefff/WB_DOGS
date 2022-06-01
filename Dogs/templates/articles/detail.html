@@ -1,41 +1,37 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title%}{{article.article_title}}{%endblock%}
 
 {% block content %}
-
-<h2> {{article.articke_title}}</h2>
-
-<p>{{article.article_text}}</p>
-
-<em>{{article.pub_date}}</em>
-
-<hr>
-{% if latest_comments_list %}
-    {% for c in latest_comments_list %}
-        <p> 
-            <strong>{{c.author_name}}</strong>
-            <p>{{c.comment_text}}</p>
-        </p>
-    {% endfor %}
-{% else %}
-комментарии не найдены
-{% endif %}
-
-<hr>
-
-
-<form action="{% url 'articles:leave_comment' article.id %}" method="POST">
-
-    {% csrf_token %}
-
-    <input type="text" required placeholder="Ваше имя" name="name"><br>
-    <textarea name="text" required="" placeholder="Текст комментария" cols="30" rows="10">
-
-    </textarea><br>
-
-    <button type="submit"> Оставить комментарий</button>
-
-</form>
-
+<div class="container">
+    <div class="chat">
+        <div class="comment">
+        <img class="comment__photo" src="{% static 'img/1.jpg' %}">
+        <h3>{{article.articke_title}}</h3>
+        <div class="comment_text_post">{{article.article_text}}</div>
+        <em>{{article.pub_date}}</em>
+                {% if article.was_published_recently %}
+                    ! Новая публикация !
+                {% endif %}
+        <hr>
+            {% if latest_comments_list %}
+            {% for c in latest_comments_list %}
+   
+            <div class="comment_name"> {{c.author_name}}</div>
+                <div class="comment_text"> {{c.comment_text}}</div>
+            {% endfor %}
+            {% else %}
+            комментарии не найдены
+            {% endif %}
+        <hr>
+        <form action="{% url 'articles:leave_comment' article.id %}" method="POST">
+            {% csrf_token %}
+            <input type="text" required placeholder="Ваше имя" name="name"><br>
+            <textarea name="text" required="" placeholder="Текст комментария" cols="30" rows="10">
+            </textarea><br>
+            <button type="submit"> Оставить комментарий</button>
+        </form>
+    </div>
+    </div> <!-- закрываем контейнер -->
+</div> 
 {% endblock %}
